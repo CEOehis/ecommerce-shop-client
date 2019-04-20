@@ -1,6 +1,10 @@
 import React from 'react';
 import { Router } from '@reach/router';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  withStyles,
+} from '@material-ui/core/styles';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 
@@ -20,13 +24,33 @@ const theme = createMuiTheme({
   },
 });
 
+const styles = {
+  layout: {
+    width: 'auto',
+    flex: 1,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    [theme.breakpoints.up(1200 + theme.spacing.unit * 3 * 2)]: {
+      width: 1200,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+};
+
+const Routes = ({ classes }) => (
+  <Router className={classes.layout}>
+    <Home path="/" />
+    <Dashboard path="/dashboard" />
+  </Router>
+);
+
+const StyledRoutes = withStyles(styles)(Routes);
+
 const AppRouting = () => (
   <MuiThemeProvider theme={theme}>
     <NavBar />
-    <Router style={{ flex: 1 }}>
-      <Home path="/" />
-      <Dashboard path="/dashboard" />
-    </Router>
+    <StyledRoutes />
     <Footer />
   </MuiThemeProvider>
 );
