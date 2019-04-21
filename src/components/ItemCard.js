@@ -8,6 +8,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link as ReachLink } from '@reach/router';
+import Link from '@material-ui/core/Link';
 import shirt from '../assets/shirt.png';
 
 const styles = {
@@ -31,6 +33,7 @@ const styles = {
     borderRadius: '500px',
     paddingLeft: '30px',
     paddingRight: '30px',
+    fontSize: '16px',
   },
   cta: {
     position: 'absolute',
@@ -39,7 +42,7 @@ const styles = {
     top: 0,
     bottom: '-22px',
     margin: '0 auto',
-    background: 'rgba(255, 255, 255, 0.8)',
+    background: 'rgba(0, 0, 0, 0.6)',
   },
   buttonGroup: {
     display: 'flex',
@@ -99,14 +102,16 @@ class ItemCard extends Component {
             {showBuyNow && (
               <CardActions className={classes.cta}>
                 <div className={classes.buttonGroup}>
-                  <Button
+                  <Link
                     className={classes.actionButton}
                     variant="contained"
-                    size="medium"
-                    color="primary"
+                    size="large"
+                    color="secondary"
+                    component={ReachLink}
+                    to="/item/sklakfs"
                   >
                     View details
-                  </Button>
+                  </Link>
                   <Button
                     className={classes.actionButton}
                     variant="contained"

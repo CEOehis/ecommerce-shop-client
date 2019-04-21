@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -20,6 +19,8 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { Link as ReachLink } from '@reach/router';
+import Link from '@material-ui/core/Link';
 
 const styles = theme => ({
   root: {
@@ -89,6 +90,9 @@ const styles = theme => ({
     width: '100%',
     [theme.breakpoints.up('md')]: {
       width: 200,
+      '&:focus': {
+        width: 300,
+      },
     },
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing.unit * 6,
@@ -237,14 +241,17 @@ class NavBar extends React.Component {
                 <MenuIcon />
               </IconButton>
             </div>
-            <Typography
+            <Link
               className={classes.title}
               variant="h6"
               color="inherit"
               noWrap
+              component={ReachLink}
+              to="/"
+              underline="none"
             >
               SHOPMATE
-            </Typography>
+            </Link>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <MenuItem className={classes.menuItem}>Women</MenuItem>

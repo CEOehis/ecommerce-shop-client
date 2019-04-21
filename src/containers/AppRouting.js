@@ -8,6 +8,7 @@ import {
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Home from './pages/Home';
+import ItemDetail from './pages/ItemDetail';
 
 const theme = createMuiTheme({
   palette: {
@@ -42,6 +43,7 @@ const styles = {
 const Routes = ({ classes }) => (
   <Router className={classes.layout}>
     <Home path="/" />
+    <ItemDetail path="/item/:itemId" />
   </Router>
 );
 
