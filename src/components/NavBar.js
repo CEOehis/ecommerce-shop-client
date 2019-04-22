@@ -50,6 +50,14 @@ const styles = theme => ({
       display: 'block',
     },
   },
+  appBarLink: {
+    display: 'block',
+    padding: '11px 16px',
+    outline: 'none',
+    '&:hover': {
+      background: 'rgba(0, 0, 0, 0.08)',
+    },
+  },
   menuItem: {
     color: '#ffffff',
   },
@@ -110,12 +118,19 @@ const styles = theme => ({
       display: 'none',
     },
   },
+  mobileNavItemHeader: {
+    fontWeight: 'bold',
+    fontSize: '20px',
+  },
 });
 
 class NavBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    regionalSubMenuAnchorEl: null,
+    natureSubMenuAnchorEl: null,
+    seasonalSubMenuAnchorEl: null,
     left: false,
   };
 
@@ -136,6 +151,18 @@ class NavBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  handleNavSubMenuOpen = anchorName => event => {
+    this.setState({
+      [anchorName]: event.currentTarget,
+    });
+  };
+
+  handleNavSubMenuClose = anchorName => () => {
+    this.setState({
+      [anchorName]: null,
+    });
+  };
+
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
@@ -143,9 +170,18 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const {
+      anchorEl,
+      mobileMoreAnchorEl,
+      regionalSubMenuAnchorEl,
+      natureSubMenuAnchorEl,
+      seasonalSubMenuAnchorEl,
+    } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
+    const isRegionalSubMenuOpen = Boolean(regionalSubMenuAnchorEl);
+    const isNatureSubMenuOpen = Boolean(natureSubMenuAnchorEl);
+    const isSeasonalSubMenuOpen = Boolean(seasonalSubMenuAnchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const renderMenu = (
@@ -190,20 +226,130 @@ class NavBar extends React.Component {
       <div className={classes.list}>
         <div className={classes.toolbar} />
         <div className={classes.drawerHeader}>
-          <IconButton onClick={this.handleDrawerClose}>
+          <IconButton
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
         <List>
           <ListItem>
-            <MenuItem>Regional</MenuItem>
+            <MenuItem className={classes.mobileNavItemHeader} disabled>
+              Regional
+            </MenuItem>
+          </ListItem>
+          <Divider />
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              French
+            </Link>
+          </ListItem>
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              Italian
+            </Link>
+          </ListItem>
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              Irish
+            </Link>
           </ListItem>
           <ListItem>
-            <MenuItem>Nature</MenuItem>
+            <MenuItem className={classes.mobileNavItemHeader} disabled>
+              Nature
+            </MenuItem>
+          </ListItem>
+          <Divider />
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              Animal
+            </Link>
+          </ListItem>
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              Flower
+            </Link>
           </ListItem>
           <ListItem>
-            <MenuItem>Seasonal</MenuItem>
+            <MenuItem className={classes.mobileNavItemHeader} disabled>
+              Seasonal
+            </MenuItem>
+          </ListItem>
+          <Divider />
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              Christmas
+            </Link>
+          </ListItem>
+          <ListItem
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            <Link
+              className={classes.appBarLink}
+              color="inherit"
+              component={ReachLink}
+              underline="none"
+              to="/catalog"
+            >
+              Valentine
+            </Link>
           </ListItem>
         </List>
         <Divider />
@@ -213,15 +359,113 @@ class NavBar extends React.Component {
     const renderMobileDrawer = (
       // eslint-disable-next-line react/destructuring-assignment
       <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
-        <div
-          tabIndex={0}
-          role="button"
-          onClick={this.toggleDrawer('left', false)}
-          onKeyDown={this.toggleDrawer('left', false)}
-        >
+        <div tabIndex={0} role="button">
           {sideList}
         </div>
       </Drawer>
+    );
+
+    const renderRegionalSubMenu = (
+      <Menu
+        anchorEl={regionalSubMenuAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isRegionalSubMenuOpen}
+        onClose={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
+      >
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
+        >
+          French
+        </Link>
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
+        >
+          Italian
+        </Link>
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
+        >
+          Irish
+        </Link>
+      </Menu>
+    );
+
+    const renderNatureSubMenu = (
+      <Menu
+        anchorEl={natureSubMenuAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isNatureSubMenuOpen}
+        onClose={this.handleNavSubMenuClose('natureSubMenuAnchorEl')}
+      >
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('natureSubMenuAnchorEl')}
+        >
+          Animal
+        </Link>
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('natureSubMenuAnchorEl')}
+        >
+          Flower
+        </Link>
+      </Menu>
+    );
+
+    const renderSeasonalSubMenu = (
+      <Menu
+        anchorEl={seasonalSubMenuAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isSeasonalSubMenuOpen}
+        onClose={this.handleNavSubMenuClose('seasonalSubMenuAnchorEl')}
+      >
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('seasonalSubMenuAnchorEl')}
+        >
+          Christmas
+        </Link>
+        <Link
+          className={classes.appBarLink}
+          color="inherit"
+          component={ReachLink}
+          underline="none"
+          to="/catalog"
+          onClick={this.handleNavSubMenuClose('seasonalSubMenuAnchorEl')}
+        >
+          Valentine
+        </Link>
+      </Menu>
     );
 
     return (
@@ -251,9 +495,24 @@ class NavBar extends React.Component {
             </Link>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <MenuItem className={classes.menuItem}>Regional</MenuItem>
-              <MenuItem className={classes.menuItem}>Nature</MenuItem>
-              <MenuItem className={classes.menuItem}>Seasonal</MenuItem>
+              <MenuItem
+                onClick={this.handleNavSubMenuOpen('regionalSubMenuAnchorEl')}
+                className={classes.menuItem}
+              >
+                Regional
+              </MenuItem>
+              <MenuItem
+                onClick={this.handleNavSubMenuOpen('natureSubMenuAnchorEl')}
+                className={classes.menuItem}
+              >
+                Nature
+              </MenuItem>
+              <MenuItem
+                onClick={this.handleNavSubMenuOpen('seasonalSubMenuAnchorEl')}
+                className={classes.menuItem}
+              >
+                Seasonal
+              </MenuItem>
             </div>
             <div className={classes.grow} />
             <div className={classes.search}>
@@ -297,6 +556,9 @@ class NavBar extends React.Component {
         {renderMenu}
         {renderMobileMenu}
         {renderMobileDrawer}
+        {renderRegionalSubMenu}
+        {renderNatureSubMenu}
+        {renderSeasonalSubMenu}
       </div>
     );
   }

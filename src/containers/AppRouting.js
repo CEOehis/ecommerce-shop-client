@@ -9,6 +9,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Home from './pages/Home';
 import ItemDetail from './pages/ItemDetail';
+import Catalog from './pages/Catalog';
 
 const theme = createMuiTheme({
   palette: {
@@ -44,6 +45,7 @@ const Routes = ({ classes }) => (
   <Router className={classes.layout}>
     <Home path="/" />
     <ItemDetail path="/item/:itemId" />
+    <Catalog path="/catalog" />
   </Router>
 );
 

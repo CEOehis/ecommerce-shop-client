@@ -59,10 +59,9 @@ class ItemCard extends Component {
     };
   }
 
-  toggleShowBuyNow = () => {
-    const { showBuyNow } = this.state;
+  toggleShowBuyNow = show => () => {
     this.setState({
-      showBuyNow: !showBuyNow,
+      showBuyNow: show,
     });
   };
 
@@ -71,8 +70,8 @@ class ItemCard extends Component {
     const { showBuyNow } = this.state;
     return (
       <Card
-        onMouseEnter={this.toggleShowBuyNow}
-        onMouseLeave={this.toggleShowBuyNow}
+        onMouseEnter={this.toggleShowBuyNow(true)}
+        onMouseLeave={this.toggleShowBuyNow(false)}
         className={classes.card}
       >
         <CardActionArea>
