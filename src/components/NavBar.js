@@ -197,16 +197,13 @@ class NavBar extends React.Component {
         <Divider />
         <List>
           <ListItem>
-            <MenuItem>Women</MenuItem>
+            <MenuItem>Regional</MenuItem>
           </ListItem>
           <ListItem>
-            <MenuItem>Men</MenuItem>
+            <MenuItem>Nature</MenuItem>
           </ListItem>
           <ListItem>
-            <MenuItem>Kids</MenuItem>
-          </ListItem>
-          <ListItem>
-            <MenuItem>Brands</MenuItem>
+            <MenuItem>Seasonal</MenuItem>
           </ListItem>
         </List>
         <Divider />
@@ -254,10 +251,9 @@ class NavBar extends React.Component {
             </Link>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <MenuItem className={classes.menuItem}>Women</MenuItem>
-              <MenuItem className={classes.menuItem}>Men</MenuItem>
-              <MenuItem className={classes.menuItem}>Kids</MenuItem>
-              <MenuItem className={classes.menuItem}>Brands</MenuItem>
+              <MenuItem className={classes.menuItem}>Regional</MenuItem>
+              <MenuItem className={classes.menuItem}>Nature</MenuItem>
+              <MenuItem className={classes.menuItem}>Seasonal</MenuItem>
             </div>
             <div className={classes.grow} />
             <div className={classes.search}>

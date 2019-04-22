@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import hero from '../../assets/hero.png';
 import ItemCard from '../../components/ItemCard';
+import DepartmentGrid from '../../components/DepartmentGrid';
 
 const styles = theme => ({
   layout: {
@@ -114,7 +115,12 @@ const Home = ({ classes }) => (
         <ItemCard />
       </Grid>
     </Grid>
+    <DepartmentGrid />
   </>
 );
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(Home);
