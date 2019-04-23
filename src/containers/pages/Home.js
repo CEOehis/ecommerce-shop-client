@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import Spinner from 'react-spinkit';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import hero from '../../assets/hero.png';
 import ItemCard from '../../components/ItemCard';
 import DepartmentGrid from '../../components/DepartmentGrid';
+import { getFeaturedProducts } from '../../actions/product';
 
 const styles = theme => ({
   layout: {
@@ -79,48 +82,90 @@ const styles = theme => ({
   },
 });
 
-const Home = ({ classes }) => (
-  <>
-    <main className={classes.layout}>
-      <Paper className={classes.mainFeaturedPost}>
-        <Grid container>
-          <Grid item md={6}>
-            <div className={classes.mainFeaturedPostContent}>
-              <Typography
-                component="h1"
-                variant="h3"
-                color="inherit"
-                gutterBottom
-              >
-                Up to 80% off
-              </Typography>
-              <Typography variant="h5" color="inherit" paragraph>
-                Get mouth watering, eye popping deals from our stores. Up to 80%
-                discounts on premium products in every category.
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
-      </Paper>
-    </main>
+class Home extends Component {
+  state = {};
 
-    <Grid classes={{ container: classes.me }} container spacing={40}>
-      <Grid spacing={8} marginBottom={40} item xs={12} md={4}>
-        <ItemCard />
-      </Grid>
-      <Grid spacing={8} marginBottom={40} item xs={12} md={4}>
-        <ItemCard />
-      </Grid>
-      <Grid spacing={8} marginBottom={40} item xs={12} md={4}>
-        <ItemCard />
-      </Grid>
-    </Grid>
-    <DepartmentGrid />
-  </>
-);
+  componentDidMount() {
+    const { getFeatured, featured } = this.props;
+    if (featured.length) {
+      return;
+    }
+    getFeatured();
+  }
+
+  render() {
+    const { classes, featured, loading } = this.props;
+    return (
+      <>
+        <main className={classes.layout}>
+          <Paper className={classes.mainFeaturedPost}>
+            <Grid container>
+              <Grid item md={6}>
+                <div className={classes.mainFeaturedPostContent}>
+                  <Typography
+                    component="h1"
+                    variant="h3"
+                    color="inherit"
+                    gutterBottom
+                  >
+                    Up to 80% off
+                  </Typography>
+                  <Typography variant="h5" color="inherit" paragraph>
+                    Get mouth watering, eye popping deals from our stores. Up to
+                    80% discounts on premium products in every category.
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
+          </Paper>
+        </main>
+        <Typography variant="h2">Featured</Typography>
+        {loading && (
+          <Grid classes={{ container: classes.me }} container spacing={40}>
+            <Grid item xs={12}>
+              <Spinner
+                style={{
+                  textAlign: 'center',
+                  height: '100px',
+                }}
+                name="line-scale-pulse-out"
+                color="coral"
+              />
+            </Grid>
+          </Grid>
+        )}
+        <Grid classes={{ container: classes.me }} container spacing={40}>
+          {featured.map(product => (
+            <Grid key={product.product_id} item xs={12} md={4}>
+              <ItemCard product={product} />
+            </Grid>
+          ))}
+        </Grid>
+        <DepartmentGrid />
+      </>
+    );
+  }
+}
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Home);
+const mapStateToProps = ({ product }) => {
+  const { loading, featured } = product;
+  return {
+    loading,
+    featured,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getFeatured() {
+    dispatch(getFeaturedProducts());
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Home));

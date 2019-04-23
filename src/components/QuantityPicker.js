@@ -3,8 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
+import { Fab } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -70,15 +70,15 @@ class QuantityPicker extends Component {
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Quantity</FormLabel>
           <div>
-            <Button
-              variant="extendedFab"
+            <Fab
+              color="primary"
               className={classes.button}
               onClick={this.reduceQuantity}
               disabled={quantity === 1}
-              color="primary"
+              variant="extended"
             >
               -
-            </Button>
+            </Fab>
             <TextField
               id="filled-number"
               value={quantity}
@@ -91,15 +91,15 @@ class QuantityPicker extends Component {
               variant="filled"
               disabled
             />
-            <Button
-              variant="extendedFab"
-              className={classes.button}
+            <Fab
               onClick={this.increaseQuantity}
               disabled={quantity === 5}
               color="primary"
+              className={classes.button}
+              variant="extended"
             >
               +
-            </Button>
+            </Fab>
           </div>
         </FormControl>
       </div>

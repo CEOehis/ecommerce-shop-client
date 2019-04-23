@@ -77,7 +77,7 @@ const ItemDetail = ({ classes }) => (
           <Typography
             className={classes.itemDescription}
             gutterBottom
-            variant="p"
+            variant="body1"
           >
             The War had just ended when this stamp was designed, and even so,
             there was enough optimism to show the destroyed oak tree sprouting

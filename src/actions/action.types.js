@@ -1,0 +1,4 @@
+/* eslint-disable import/prefer-default-export */
+export const GET_FEATURED_PRODUCTS = 'GET_FEATURED_PRODUCTS';
+export const GET_FEATURED_PRODUCTS_SUCCESS = 'GET_FEATURED_PRODUCTS_SUCCESS';
+export const GET_FEATURED_PRODUCTS_ERROR = 'GET_FEATURED_PRODUCTS_ERROR';

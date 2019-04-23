@@ -10,12 +10,11 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
-import shirt from '../assets/shirt.png';
+import config from '../config/config';
+
+const { imageBaseUrl } = config;
 
 const styles = {
-  card: {
-    // maxWidth: 345,
-  },
   media: {
     height: 200,
     backgroundSize: 'contain',
@@ -66,8 +65,9 @@ class ItemCard extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, product } = this.props;
     const { showBuyNow } = this.state;
+    const imageUrl = `${imageBaseUrl}/${product.image}`;
     return (
       <Card
         onMouseEnter={this.toggleShowBuyNow(true)}
@@ -77,7 +77,7 @@ class ItemCard extends Component {
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            image={shirt}
+            image={imageUrl}
             title="Contemplative Reptile"
           />
           <CardContent>
@@ -87,7 +87,7 @@ class ItemCard extends Component {
               variant="h6"
               component="h2"
             >
-              Pull& Bear Jumper In Textured Knit In Blue
+              {product.name}
             </Typography>
             <Typography
               className={classes.itemPrice}
@@ -96,18 +96,17 @@ class ItemCard extends Component {
               component="h2"
               color="primary"
             >
-              $19.59
+              ${product.price}
             </Typography>
             {showBuyNow && (
               <CardActions className={classes.cta}>
                 <div className={classes.buttonGroup}>
                   <Link
                     className={classes.actionButton}
-                    variant="contained"
                     size="large"
                     color="secondary"
                     component={ReachLink}
-                    to="/item/sklakfs"
+                    to={`/item/${product.product_id}`}
                   >
                     View details
                   </Link>
@@ -131,6 +130,7 @@ class ItemCard extends Component {
 
 ItemCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  product: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ItemCard);

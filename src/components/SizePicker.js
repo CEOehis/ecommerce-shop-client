@@ -55,7 +55,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'S' && 'primary'}
+                color={selected === 'S' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 S
@@ -63,7 +63,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'M' && 'primary'}
+                color={selected === 'M' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 M
@@ -71,7 +71,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'L' && 'primary'}
+                color={selected === 'L' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 L
@@ -79,7 +79,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'XL' && 'primary'}
+                color={selected === 'XL' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 XL
@@ -87,7 +87,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'XXL' && 'primary'}
+                color={selected === 'XXL' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 XXL

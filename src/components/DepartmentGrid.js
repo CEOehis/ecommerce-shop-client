@@ -81,7 +81,6 @@ function ImageGridList(props) {
                 </Typography>
                 <Link
                   className={classes.actionButton}
-                  variant="contained"
                   size="large"
                   color="secondary"
                   component={ReachLink}
