@@ -18,12 +18,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   gridList: {
-    // width: 500,
-    // height: 450,
-  },
-  media: {
-    height: 200,
-    backgroundSize: 'contain',
+    width: '100%',
   },
   itemName: {
     textAlign: 'center',

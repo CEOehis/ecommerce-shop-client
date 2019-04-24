@@ -6,10 +6,12 @@ import Spinner from 'react-spinkit';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import hero from '../../assets/hero.png';
 import ItemCard from '../../components/ItemCard';
 import DepartmentGrid from '../../components/DepartmentGrid';
 import { getFeaturedProducts } from '../../actions/product';
+import config from '../../config/config';
+
+const { imageBaseUrl } = config;
 
 const styles = theme => ({
   layout: {
@@ -32,7 +34,7 @@ const styles = theme => ({
     justifyContent: 'space-between',
   },
   mainFeaturedPost: {
-    backgroundImage: `url(${hero})`,
+    backgroundImage: `url(${imageBaseUrl}/hero.png)`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center top',
     backgroundSize: 'cover',
@@ -119,7 +121,7 @@ class Home extends Component {
             </Grid>
           </Paper>
         </main>
-        <Typography variant="h2">Featured</Typography>
+        <Typography variant="h4">Featured</Typography>
         {loading && (
           <Grid classes={{ container: classes.me }} container spacing={40}>
             <Grid item xs={12}>

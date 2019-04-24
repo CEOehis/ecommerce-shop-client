@@ -49,6 +49,8 @@ const Routes = ({ classes }) => (
     <Home path="/" />
     <ItemDetail path="/item/:itemId" />
     <Catalog path="/catalog" />
+    <Catalog path="/catalog/:department" />
+    <Catalog path="/catalog/:department/:category" />
   </Router>
 );
 

@@ -250,7 +250,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/regional/french"
             >
               French
             </Link>
@@ -264,7 +264,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/regional/italian"
             >
               Italian
             </Link>
@@ -278,7 +278,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/regional/irish"
             >
               Irish
             </Link>
@@ -298,7 +298,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/nature/animal"
             >
               Animal
             </Link>
@@ -312,7 +312,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/nature/flower"
             >
               Flower
             </Link>
@@ -332,7 +332,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/seasonal/christmas"
             >
               Christmas
             </Link>
@@ -346,7 +346,7 @@ class NavBar extends React.Component {
               color="inherit"
               component={ReachLink}
               underline="none"
-              to="/catalog"
+              to="/catalog/seasonal/valentine"
             >
               Valentine
             </Link>
@@ -378,7 +378,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/regional/french"
           onClick={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
         >
           French
@@ -388,7 +388,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/regional/italian"
           onClick={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
         >
           Italian
@@ -398,7 +398,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/regional/irish"
           onClick={this.handleNavSubMenuClose('regionalSubMenuAnchorEl')}
         >
           Irish
@@ -419,7 +419,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/nature/animal"
           onClick={this.handleNavSubMenuClose('natureSubMenuAnchorEl')}
         >
           Animal
@@ -429,7 +429,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/nature/flower"
           onClick={this.handleNavSubMenuClose('natureSubMenuAnchorEl')}
         >
           Flower
@@ -450,7 +450,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/seasonal/christmas"
           onClick={this.handleNavSubMenuClose('seasonalSubMenuAnchorEl')}
         >
           Christmas
@@ -460,7 +460,7 @@ class NavBar extends React.Component {
           color="inherit"
           component={ReachLink}
           underline="none"
-          to="/catalog"
+          to="/catalog/seasonal/valentine"
           onClick={this.handleNavSubMenuClose('seasonalSubMenuAnchorEl')}
         >
           Valentine

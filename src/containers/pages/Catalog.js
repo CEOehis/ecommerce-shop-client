@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import ItemCard from '../../components/ItemCard';
-import hero from '../../assets/hero.png';
-import nature from '../../assets/nature.png';
-import seasonal from '../../assets/seasonal.png';
-import regional from '../../assets/regional.png';
+import config from '../../config/config';
+
+const { imageBaseUrl } = config;
 
 const styles = theme => ({
   appBar: {
@@ -20,11 +18,12 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 2,
   },
   heroUnit: {
-    backgroundColor: theme.palette.background.paper,
-    backgroundImage: `url(${seasonal})`,
+    // backgroundImage: `url(${imageBaseUrl}/nature.png)`,
+    // backgroundImage: `url(${seasonal})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center top',
     backgroundSize: 'cover',
+    backgroundColor: theme.palette.grey[800],
   },
   heroContent: {
     // maxWidth: 800,
@@ -68,16 +67,28 @@ const styles = theme => ({
 });
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const product = {
+  image: 'birds.gif',
+  name: 'Random Shirt',
+  price: '33.23',
+  product_id: 44,
+};
 
 function Album(props) {
   const { classes } = props;
+  const { department, category } = props;
 
   return (
     <>
       <CssBaseline />
       <main>
         {/* Hero unit */}
-        <div className={classes.heroUnit}>
+        <div
+          className={classes.heroUnit}
+          style={{
+            backgroundImage: `url(${imageBaseUrl}/${department || 'hero'}.png)`,
+          }}
+        >
           <div className={classes.heroContent}>
             <Typography
               component="h1"
@@ -86,14 +97,9 @@ function Album(props) {
               color="inherit"
               gutterBottom
             >
-              Italian
+              {category ? category.toUpperCase() : null}
             </Typography>
-            <Typography
-              variant="h6"
-              // align="center"
-              color="inherit"
-              paragraph
-            >
+            <Typography variant="h6" color="inherit" paragraph>
               The French have always had an eye for beauty. One look at the
               T-shirts below and you'll see that same appreciation has been
               applied abundantly to their postage stamps. Below are some of our
@@ -108,7 +114,7 @@ function Album(props) {
           <Grid container spacing={40}>
             {cards.map(card => (
               <Grid item key={card} sm={6} md={4} lg={3}>
-                <ItemCard />
+                <ItemCard product={product} />
               </Grid>
             ))}
           </Grid>
