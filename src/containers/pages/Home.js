@@ -6,6 +6,8 @@ import Spinner from 'react-spinkit';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { Link as ReachLink } from '@reach/router';
+import Link from '@material-ui/core/Link';
 import ItemCard from '../../components/ItemCard';
 import DepartmentGrid from '../../components/DepartmentGrid';
 import { getFeaturedProducts } from '../../actions/product';
@@ -51,6 +53,19 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       paddingRight: 0,
     },
+  },
+  actionButton: {
+    margin: '5px auto',
+    borderRadius: '500px',
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    fontSize: '16px',
+    background: theme.palette.primary.main,
+    color: 'white',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
   },
   mainGrid: {
     marginTop: theme.spacing.unit * 3,
@@ -116,6 +131,16 @@ class Home extends Component {
                     Get mouth watering, eye popping deals from our stores. Up to
                     80% discounts on premium products in every category.
                   </Typography>
+                  <Link
+                    className={classes.actionButton}
+                    size="large"
+                    color="secondary"
+                    component={ReachLink}
+                    to="/catalog"
+                    underline="none"
+                  >
+                    Shop Now
+                  </Link>
                 </div>
               </Grid>
             </Grid>

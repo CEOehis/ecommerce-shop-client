@@ -1,12 +1,17 @@
-import React from 'react';
+/* eslint-disable react/no-unescaped-entities */
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Spinner from 'react-spinkit';
 import { withStyles } from '@material-ui/core/styles';
+import Pagination from 'material-ui-flat-pagination';
 import ItemCard from '../../components/ItemCard';
 import config from '../../config/config';
+import { getAllProducts } from '../../actions/product';
 
 const { imageBaseUrl } = config;
 
@@ -18,8 +23,6 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 2,
   },
   heroUnit: {
-    // backgroundImage: `url(${imageBaseUrl}/nature.png)`,
-    // backgroundImage: `url(${seasonal})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center top',
     backgroundSize: 'cover',
@@ -46,6 +49,9 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
+  me: {
+    padding: '20px',
+  },
   cardGrid: {
     padding: `${theme.spacing.unit * 8}px 0`,
   },
@@ -60,72 +66,138 @@ const styles = theme => ({
   cardContent: {
     flexGrow: 1,
   },
+  pagination: {
+    textAlign: 'center',
+  },
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
   },
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const product = {
-  image: 'birds.gif',
-  name: 'Random Shirt',
-  price: '33.23',
-  product_id: 44,
-};
+class Catalog extends Component {
+  state = {
+    offset: 0,
+  };
 
-function Album(props) {
-  const { classes } = props;
-  const { department, category } = props;
+  componentDidMount() {
+    const { getProducts } = this.props;
+    getProducts();
+  }
 
-  return (
-    <>
-      <CssBaseline />
-      <main>
-        {/* Hero unit */}
-        <div
-          className={classes.heroUnit}
-          style={{
-            backgroundImage: `url(${imageBaseUrl}/${department || 'hero'}.png)`,
-          }}
-        >
-          <div className={classes.heroContent}>
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="inherit"
-              gutterBottom
-            >
-              {category ? category.toUpperCase() : null}
-            </Typography>
-            <Typography variant="h6" color="inherit" paragraph>
-              The French have always had an eye for beauty. One look at the
-              T-shirts below and you'll see that same appreciation has been
-              applied abundantly to their postage stamps. Below are some of our
-              most beautiful and colorful T-shirts, so browse away! And don't
-              forget to go all the way to the bottom - you don't want to miss
-              any of them!
-            </Typography>
+  handlePagination = offset => {
+    const { getProducts, currentPage } = this.props;
+    this.setState({ offset }, () => {
+      getProducts('', currentPage + 1);
+    });
+  };
+
+  render() {
+    const {
+      department,
+      category,
+      classes,
+      products,
+      totalRecords,
+      loading,
+    } = this.props;
+    const { offset } = this.state;
+    return (
+      <>
+        <CssBaseline />
+        <main>
+          {/* Hero unit */}
+          <div
+            className={classes.heroUnit}
+            style={{
+              backgroundImage: `url(${imageBaseUrl}/${department ||
+                'hero'}.png)`,
+            }}
+          >
+            <div className={classes.heroContent}>
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="inherit"
+                gutterBottom
+              >
+                {category ? category.toUpperCase() : null}
+              </Typography>
+              <Typography variant="h6" color="inherit" paragraph>
+                The French have always had an eye for beauty. One look at the
+                T-shirts below and you'll see that same appreciation has been
+                applied abundantly to their postage stamps. Below are some of
+                our most beautiful and colorful T-shirts, so browse away! And
+                don't forget to go all the way to the bottom - you don't want to
+                miss any of them!
+              </Typography>
+            </div>
           </div>
-        </div>
-        <div className={classNames(classes.layout, classes.cardGrid)}>
-          {/* End hero unit */}
-          <Grid container spacing={40}>
-            {cards.map(card => (
-              <Grid item key={card} sm={6} md={4} lg={3}>
-                <ItemCard product={product} />
+          <div className={classNames(classes.layout, classes.cardGrid)}>
+            {loading && (
+              <Grid classes={{ container: classes.me }} container spacing={40}>
+                <Grid item xs={12}>
+                  <Spinner
+                    style={{
+                      textAlign: 'center',
+                      height: '100px',
+                    }}
+                    name="line-scale-pulse-out"
+                    color="coral"
+                  />
+                </Grid>
               </Grid>
-            ))}
-          </Grid>
-        </div>
-      </main>
-    </>
-  );
+            )}
+            {/* End hero unit */}
+            <Grid container spacing={40}>
+              {products.map(product => (
+                <Grid item key={product.product_id} sm={6} md={4} lg={3}>
+                  <ItemCard product={product} />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+          {products.length ? (
+            <Pagination
+              limit={10}
+              offset={offset}
+              total={totalRecords}
+              onClick={(e, pageOffset) => this.handlePagination(pageOffset)}
+              disabled={loading}
+              className={classes.pagination}
+            />
+          ) : null}
+        </main>
+      </>
+    );
+  }
 }
-
-Album.propTypes = {
+Catalog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Album);
+const mapStateToProps = ({ product }) => {
+  const {
+    loading,
+    products,
+    meta: { currentPage, totalRecords },
+  } = product;
+  return {
+    loading,
+    products,
+    currentPage,
+    totalRecords,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getProducts(search, page, limit) {
+    dispatch(getAllProducts(search, page, limit));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Catalog));
