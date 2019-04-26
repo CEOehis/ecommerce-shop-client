@@ -39,33 +39,15 @@ const styles = theme => ({
 });
 
 class QuantityPicker extends Component {
-  state = {
-    quantity: 1,
-  };
-
-  handleChange = event => {
-    this.setState({
-      quantity: event.target.value,
-    });
-  };
-
-  reduceQuantity = () => {
-    const { quantity } = this.state;
-    this.setState({
-      quantity: quantity - 1,
-    });
-  };
-
-  increaseQuantity = () => {
-    const { quantity } = this.state;
-    this.setState({
-      quantity: quantity + 1,
-    });
-  };
+  state = {};
 
   render() {
-    const { classes } = this.props;
-    const { quantity } = this.state;
+    const {
+      classes,
+      quantity,
+      onIncreaseQuantity,
+      onReduceQuantity,
+    } = this.props;
     return (
       <div>
         <FormControl component="fieldset" className={classes.formControl}>
@@ -74,7 +56,7 @@ class QuantityPicker extends Component {
             <Fab
               color="primary"
               className={classes.button}
-              onClick={this.reduceQuantity}
+              onClick={onReduceQuantity}
               disabled={quantity === 1}
               variant="extended"
             >
@@ -93,7 +75,7 @@ class QuantityPicker extends Component {
               disabled
             />
             <Fab
-              onClick={this.increaseQuantity}
+              onClick={onIncreaseQuantity}
               disabled={quantity === 5}
               color="primary"
               className={classes.button}

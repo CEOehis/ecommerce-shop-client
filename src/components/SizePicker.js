@@ -33,18 +33,15 @@ const styles = theme => ({
 });
 
 class SizePicker extends React.Component {
-  state = {
-    selected: '',
-  };
+  state = {};
 
   handleSelect = event => {
-    console.log('event', event.target.innerText);
-    this.setState({ selected: event.target.innerText });
+    const { onSizeChange } = this.props;
+    onSizeChange(event.target.innerText);
   };
 
   render() {
-    const { classes } = this.props;
-    const { selected } = this.state;
+    const { classes, size } = this.props;
 
     return (
       <div>
@@ -55,7 +52,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'S' ? 'primary' : null}
+                color={size === 'S' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 S
@@ -63,7 +60,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'M' ? 'primary' : null}
+                color={size === 'M' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 M
@@ -71,7 +68,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'L' ? 'primary' : null}
+                color={size === 'L' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 L
@@ -79,7 +76,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'XL' ? 'primary' : null}
+                color={size === 'XL' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 XL
@@ -87,7 +84,7 @@ class SizePicker extends React.Component {
               <Button
                 variant="contained"
                 className={classes.button}
-                color={selected === 'XXL' ? 'primary' : null}
+                color={size === 'XXL' ? 'primary' : null}
                 onClick={this.handleSelect}
               >
                 XXL

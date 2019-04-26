@@ -6,11 +6,15 @@ import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import Spinner from 'react-spinkit';
 import Button from '@material-ui/core/Button';
+import cookieParse from 'cookie-parse';
 import ColorPicker from '../../components/ColorPicker';
 import SizePicker from '../../components/SizePicker';
 import QuantityPicker from '../../components/QuantityPicker';
+import CardNotification from '../../components/CartNotification';
 import { getProductDetails } from '../../actions/product.action';
 import config from '../../config/config';
+import { addToCart } from '../../actions/cart.action';
+import * as types from '../../actions/action.types';
 
 const { imageBaseUrl } = config;
 
@@ -55,18 +59,83 @@ const styles = theme => ({
 });
 
 class ItemDetail extends Component {
-  state = {};
+  state = {
+    quantity: 1,
+    size: null,
+    color: null,
+    showSuccessMessage: false,
+  };
 
   componentDidMount() {
     const { getProduct, itemId } = this.props;
     getProduct(itemId);
   }
 
+  reduceQuantity = () => {
+    const { quantity } = this.state;
+    this.setState({
+      quantity: quantity - 1,
+    });
+  };
+
+  increaseQuantity = () => {
+    const { quantity } = this.state;
+    this.setState({
+      quantity: quantity + 1,
+    });
+  };
+
+  selectColor = color => {
+    this.setState({
+      color,
+    });
+  };
+
+  selectSize = size => {
+    this.setState({
+      size,
+    });
+  };
+
+  addToCart = async () => {
+    const { quantity, size, color } = this.state;
+    const { addItemToCart, itemId } = this.props;
+    const { cartId } = cookieParse.parse(document.cookie);
+    const attributes = `${size}, ${color}`;
+    const status = await addItemToCart({
+      quantity,
+      attributes,
+      cartId,
+      productId: itemId,
+    });
+    if (status.type === types.ADD_TO_CART_SUCCESS) {
+      this.setState({
+        quantity: 1,
+        size: null,
+        color: null,
+        showSuccessMessage: true,
+      });
+    }
+  };
+
+  closeSnackBar = () => {
+    this.setState({
+      showSuccessMessage: false,
+    });
+  };
+
   render() {
-    const { classes, loading, singleProduct } = this.props;
+    const { classes, loading, singleProduct, addingToCart } = this.props;
+    const { quantity, size, color, showSuccessMessage } = this.state;
+    console.log('showSuccess item detail', showSuccessMessage);
+
     return (
       <>
         <main className={classes.layout}>
+          <CardNotification
+            shouldOpen={showSuccessMessage}
+            closeSnackBar={this.closeSnackBar}
+          />
           {loading ? (
             <Grid
               classes={{ container: classes.loading }}
@@ -119,13 +188,19 @@ class ItemDetail extends Component {
                   >
                     {singleProduct.description}
                   </Typography>
-                  <QuantityPicker />
-                  <ColorPicker />
-                  <SizePicker />
+                  <QuantityPicker
+                    quantity={quantity}
+                    onIncreaseQuantity={this.increaseQuantity}
+                    onReduceQuantity={this.reduceQuantity}
+                  />
+                  <ColorPicker color={color} onColorChange={this.selectColor} />
+                  <SizePicker size={size} onSizeChange={this.selectSize} />
                   <Button
                     variant="contained"
                     className={classes.button}
                     color="primary"
+                    onClick={this.addToCart}
+                    disabled={!quantity || !size || !color || addingToCart}
                   >
                     Add to cart
                   </Button>
@@ -139,17 +214,21 @@ class ItemDetail extends Component {
   }
 }
 
-const mapStateToProps = ({ product }) => {
+const mapStateToProps = ({ product, cart }) => {
   const { loading, singleProduct } = product;
   return {
     loading,
     singleProduct,
+    addingToCart: cart.loading,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getProduct(productId) {
     dispatch(getProductDetails(productId));
+  },
+  addItemToCart(payload) {
+    return dispatch(addToCart(payload));
   },
 });
 

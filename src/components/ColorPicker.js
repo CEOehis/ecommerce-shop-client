@@ -29,17 +29,15 @@ const styles = theme => ({
 });
 
 class ColorPicker extends React.Component {
-  state = {
-    value: 'female',
-  };
+  state = {};
 
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    const { onColorChange } = this.props;
+    onColorChange(event.target.value);
   };
 
   render() {
-    const { classes } = this.props;
-    const { value } = this.state;
+    const { classes, color } = this.props;
 
     return (
       <div className={classes.root}>
@@ -49,7 +47,7 @@ class ColorPicker extends React.Component {
             aria-label="Color"
             name="color"
             className={classes.group}
-            value={value}
+            value={color}
             onChange={this.handleChange}
           >
             <FormControlLabel

@@ -12,6 +12,11 @@ const initialState = {
     error: '',
     singleProduct: null, // final data shape will be an object
   },
+  cart: {
+    loading: false,
+    cart: [],
+    error: '',
+  },
 };
 
 export default initialState;
