@@ -62,6 +62,21 @@ const getAllProductsInDepartmentError = error => ({
   payload: error,
 });
 
+const getProductDetailsRequest = isLoading => ({
+  type: types.GET_PRODUCT_DETAILS,
+  payload: isLoading,
+});
+
+const getProductDetailsSuccess = data => ({
+  type: types.GET_PRODUCT_DETAILS_SUCCESS,
+  payload: data,
+});
+
+const getProductDetailsError = error => ({
+  type: types.GET_PRODUCT_DETAILS_ERROR,
+  payload: error,
+});
+
 export const getFeaturedProducts = () => async dispatch => {
   dispatch(getFeaturedProductsRequest(true));
   try {
@@ -123,5 +138,17 @@ export const getAllProductsInDepartment = (
   } catch (error) {
     dispatch(getAllProductsInDepartmentRequest(false));
     return dispatch(getAllProductsInDepartmentError(error));
+  }
+};
+
+export const getProductDetails = productId => async dispatch => {
+  dispatch(getProductDetailsRequest(true));
+  try {
+    const product = await ProductService.getProductDetails(productId);
+    dispatch(getProductDetailsRequest(false));
+    return dispatch(getProductDetailsSuccess(product.data.product));
+  } catch (error) {
+    dispatch(getProductDetailsRequest(false));
+    return dispatch(getProductDetailsError(error));
   }
 };

@@ -7,6 +7,7 @@ const productReducer = (state = initialState.product, action) => {
     case types.GET_ALL_PRODUCTS:
     case types.GET_ALL_PRODUCTS_IN_CATEGORY:
     case types.GET_ALL_PRODUCTS_IN_DEPARTMENT:
+    case types.GET_PRODUCT_DETAILS:
       return {
         ...state,
         loading: action.payload,
@@ -28,9 +29,15 @@ const productReducer = (state = initialState.product, action) => {
     case types.GET_ALL_PRODUCTS_ERROR:
     case types.GET_ALL_PRODUCTS_IN_CATEGORY_ERROR:
     case types.GET_ALL_PRODUCTS_IN_DEPARTMENT_ERROR:
+    case types.GET_PRODUCT_DETAILS_ERROR:
       return {
         ...state,
         error: action.payload,
+      };
+    case types.GET_PRODUCT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        singleProduct: action.payload,
       };
     default:
       return state;

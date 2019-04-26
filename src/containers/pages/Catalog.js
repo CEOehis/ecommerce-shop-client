@@ -221,7 +221,7 @@ class Catalog extends Component {
                 className={classes.pagination}
               />
             ) : null}
-            {loading && (
+            {loading ? (
               <Grid
                 classes={{ container: classes.loading }}
                 container
@@ -238,15 +238,15 @@ class Catalog extends Component {
                   />
                 </Grid>
               </Grid>
+            ) : (
+              <Grid container spacing={40}>
+                {products.map(product => (
+                  <Grid item key={product.product_id} sm={6} md={4} lg={3}>
+                    <ItemCard product={product} />
+                  </Grid>
+                ))}
+              </Grid>
             )}
-            {/* End hero unit */}
-            <Grid container spacing={40}>
-              {products.map(product => (
-                <Grid item key={product.product_id} sm={6} md={4} lg={3}>
-                  <ItemCard product={product} />
-                </Grid>
-              ))}
-            </Grid>
           </div>
           {products.length ? (
             <Pagination

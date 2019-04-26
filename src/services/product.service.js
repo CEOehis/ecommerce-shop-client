@@ -45,4 +45,8 @@ export default class ProductService {
       `${apiBaseUrl}/products/in-department/${departmentId}?page=${page}&limit=${limit}`
     );
   }
+
+  static getProductDetails(productId) {
+    return axios.get(`${apiBaseUrl}/products/${productId}`);
+  }
 }

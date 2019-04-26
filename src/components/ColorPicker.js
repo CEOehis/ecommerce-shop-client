@@ -15,7 +15,7 @@ const styles = theme => ({
   },
   formControl: {
     margin: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit,
+    marginBottom: 0,
   },
   group: {
     margin: `${theme.spacing.unit}px 0`,

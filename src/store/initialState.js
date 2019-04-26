@@ -10,6 +10,7 @@ const initialState = {
       totalRecords: 0,
     },
     error: '',
+    singleProduct: null, // final data shape will be an object
   },
 };
 
