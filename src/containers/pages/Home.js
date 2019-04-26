@@ -10,7 +10,7 @@ import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
 import ItemCard from '../../components/ItemCard';
 import DepartmentGrid from '../../components/DepartmentGrid';
-import { getFeaturedProducts } from '../../actions/product';
+import { getFeaturedProducts } from '../../actions/product.action';
 import config from '../../config/config';
 
 const { imageBaseUrl } = config;

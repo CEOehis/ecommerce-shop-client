@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -11,7 +12,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Pagination from 'material-ui-flat-pagination';
 import ItemCard from '../../components/ItemCard';
 import config from '../../config/config';
-import { getAllProducts } from '../../actions/product';
+import {
+  getAllProducts,
+  getAllProductsInCategory,
+  getAllProductsInDepartment,
+} from '../../actions/product.action';
 
 const { imageBaseUrl } = config;
 
@@ -49,7 +54,7 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  me: {
+  loading: {
     padding: '20px',
   },
   cardGrid: {
@@ -68,6 +73,7 @@ const styles = theme => ({
   },
   pagination: {
     textAlign: 'center',
+    marginBottom: '30px',
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
@@ -78,17 +84,83 @@ const styles = theme => ({
 class Catalog extends Component {
   state = {
     offset: 0,
+    limit: 12,
   };
 
   componentDidMount() {
-    const { getProducts } = this.props;
-    getProducts();
+    const {
+      getProducts,
+      getProductsInCategory,
+      getProductsInDepartment,
+      department,
+      category,
+    } = this.props;
+
+    const isOnDepartmentCatalog = Boolean(department);
+    const isOnCategoryCatalog = Boolean(category);
+    if (isOnCategoryCatalog) {
+      return getProductsInCategory(category);
+    }
+    if (isOnDepartmentCatalog) {
+      return getProductsInDepartment(department);
+    }
+    return getProducts();
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      getProducts,
+      getProductsInCategory,
+      getProductsInDepartment,
+      department,
+      category,
+      location: { pathname },
+    } = this.props;
+
+    const isOnDepartmentCatalog = Boolean(department);
+    const isOnCategoryCatalog = Boolean(category);
+    if (pathname !== prevProps.location.pathname) {
+      if (isOnCategoryCatalog) {
+        if (category !== prevProps.category) {
+          return getProductsInCategory(category);
+        }
+      }
+      if (isOnDepartmentCatalog) {
+        if (department !== prevProps.department) {
+          return getProductsInDepartment(department);
+        }
+      }
+      return getProducts();
+    }
+    return null;
+  }
+
+  goToPage = page => {
+    const {
+      getProducts,
+      getProductsInCategory,
+      getProductsInDepartment,
+      department,
+      category,
+    } = this.props;
+
+    const isOnDepartmentCatalog = Boolean(department);
+    const isOnCategoryCatalog = Boolean(category);
+    if (isOnCategoryCatalog) {
+      return getProductsInCategory(category, page);
+    }
+    if (isOnDepartmentCatalog) {
+      return getProductsInDepartment(department, page);
+    }
+    return getProducts('', page);
+  };
+
   handlePagination = offset => {
-    const { getProducts, currentPage } = this.props;
+    const { limit } = this.state;
+
     this.setState({ offset }, () => {
-      getProducts('', currentPage + 1);
+      const page = offset / limit + 1;
+      this.goToPage(page);
     });
   };
 
@@ -122,7 +194,11 @@ class Catalog extends Component {
                 color="inherit"
                 gutterBottom
               >
-                {category ? category.toUpperCase() : null}
+                {category
+                  ? category.toUpperCase()
+                  : department
+                  ? department.toUpperCase()
+                  : 'ALL PRODUCTS'}
               </Typography>
               <Typography variant="h6" color="inherit" paragraph>
                 The French have always had an eye for beauty. One look at the
@@ -135,8 +211,22 @@ class Catalog extends Component {
             </div>
           </div>
           <div className={classNames(classes.layout, classes.cardGrid)}>
+            {products.length ? (
+              <Pagination
+                limit={12}
+                offset={offset}
+                total={totalRecords}
+                onClick={(e, pageOffset) => this.handlePagination(pageOffset)}
+                disabled={loading}
+                className={classes.pagination}
+              />
+            ) : null}
             {loading && (
-              <Grid classes={{ container: classes.me }} container spacing={40}>
+              <Grid
+                classes={{ container: classes.loading }}
+                container
+                spacing={40}
+              >
                 <Grid item xs={12}>
                   <Spinner
                     style={{
@@ -160,7 +250,7 @@ class Catalog extends Component {
           </div>
           {products.length ? (
             <Pagination
-              limit={10}
+              limit={12}
               offset={offset}
               total={totalRecords}
               onClick={(e, pageOffset) => this.handlePagination(pageOffset)}
@@ -194,6 +284,12 @@ const mapStateToProps = ({ product }) => {
 const mapDispatchToProps = dispatch => ({
   getProducts(search, page, limit) {
     dispatch(getAllProducts(search, page, limit));
+  },
+  getProductsInCategory(category, page, limit) {
+    dispatch(getAllProductsInCategory(category, page, limit));
+  },
+  getProductsInDepartment(department, page, limit) {
+    dispatch(getAllProductsInDepartment(department, page, limit));
   },
 });
 
