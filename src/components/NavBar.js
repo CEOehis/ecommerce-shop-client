@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -212,14 +213,16 @@ class NavBar extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={cart.length} color="secondary">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
-          <p>Shopping Cart</p>
-        </MenuItem>
+        <Link component={ReachLink} to="/cart" underline="none" color="inherit">
+          <MenuItem onClick={this.handleMobileMenuClose}>
+            <IconButton color="inherit">
+              <Badge badgeContent={cart.length} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+            <p>Shopping Cart</p>
+          </MenuItem>
+        </Link>
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <AccountCircle />
@@ -536,9 +539,17 @@ class NavBar extends React.Component {
             </div>
             <div className={classes.sectionDesktop}>
               <IconButton color="inherit">
-                <Badge badgeContent={cart.length} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
+                <Link
+                  color="inherit"
+                  component={ReachLink}
+                  underline="none"
+                  to="/cart"
+                  onClick={this.handleNavSubMenuClose('natureSubMenuAnchorEl')}
+                >
+                  <Badge badgeContent={cart.length} color="secondary">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </Link>
               </IconButton>
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
@@ -546,7 +557,14 @@ class NavBar extends React.Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
+                <Button
+                  color="inherit"
+                  component={ReachLink}
+                  underline="none"
+                  to=""
+                >
+                  <AccountCircle />
+                </Button>
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>

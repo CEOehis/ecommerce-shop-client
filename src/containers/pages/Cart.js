@@ -1,0 +1,185 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { Typography, Button } from '@material-ui/core';
+import config from '../../config/config';
+import { deleteItem } from '../../actions/cart.action';
+
+const { imageBaseUrl } = config;
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  layout: {
+    width: 'auto',
+    // marginLeft: theme.spacing.unit,
+    // marginRight: theme.spacing.unit,
+    [theme.breakpoints.up(1200 + theme.spacing.unit * 3 * 2)]: {
+      width: 1200,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  table: {
+    minWidth: 700,
+  },
+  heroContent: {
+    margin: '0 auto',
+    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 2}px`,
+  },
+  name: {
+    marginBottom: 0,
+  },
+});
+
+function Cart(props) {
+  const { classes, cart, removeItem } = props;
+
+  const subTotal = cart.reduce((acc, curr) => {
+    return Number(acc) + Number(curr.Product.price) * curr.quantity;
+  }, 0);
+
+  const discountedTotal = cart.reduce((acc, curr) => {
+    const price = Number(curr.Product.price);
+    const discountedPrice = Number(curr.Product.discounted_price);
+    return Number(acc) + (discountedPrice || price) * curr.quantity;
+  }, 0);
+
+  return (
+    <>
+      <main className={classes.layout}>
+        <div className={classes.heroContent}>
+          <Typography
+            component="h1"
+            variant="h5"
+            color="textPrimary"
+            gutterBottom
+          >
+            Cart({cart.length} items)
+          </Typography>
+        </div>
+
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Item</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell align="right">Unit Price</TableCell>
+                <TableCell align="right">Total price</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cart.map(item => (
+                <TableRow key={item.item_id}>
+                  <TableCell component="th" scope="row">
+                    <img
+                      alt={item.Product.name}
+                      src={`${imageBaseUrl}/${item.Product.thumbnail}`}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <h3 className={classes.name}>{item.Product.name}</h3>
+                    <br />
+                    {item.attributes}
+                  </TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell align="right">${item.Product.price}</TableCell>
+                  <TableCell align="right">
+                    ${(item.Product.price * item.quantity).toFixed(2)}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => removeItem(item.item_id)}
+                      color="primary"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell>Sub - Total</TableCell>
+                <TableCell align="right">${subTotal}</TableCell>
+                <TableCell />
+              </TableRow>
+              <TableRow>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell>Total discount</TableCell>
+                <TableCell align="right">
+                  ${(subTotal - discountedTotal).toFixed(2)}
+                </TableCell>
+                <TableCell />
+              </TableRow>
+              <TableRow>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell>Total</TableCell>
+                <TableCell align="right">
+                  ${discountedTotal.toFixed(2)}
+                </TableCell>
+                <TableCell />
+              </TableRow>
+              <TableRow>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell align="right">
+                  <Button
+                    className={classes.actionButton}
+                    variant="contained"
+                    size="medium"
+                    color="primary"
+                  >
+                    Checkout
+                  </Button>
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
+      </main>
+    </>
+  );
+}
+
+Cart.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  cart: state.cart.cart,
+});
+
+const mapDispatchToProps = dispatch => ({
+  removeItem(itemId) {
+    dispatch(deleteItem(itemId));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Cart));

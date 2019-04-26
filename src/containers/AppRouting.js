@@ -10,6 +10,7 @@ import Footer from '../components/Footer';
 import Home from './pages/Home';
 import ItemDetail from './pages/ItemDetail';
 import Catalog from './pages/Catalog';
+import Cart from './pages/Cart';
 
 const theme = createMuiTheme({
   palette: {
@@ -51,6 +52,7 @@ const Routes = ({ classes }) => (
     <Catalog path="/catalog" />
     <Catalog path="/catalog/:department" />
     <Catalog path="/catalog/:department/:category" />
+    <Cart path="/cart" />
   </Router>
 );
 

@@ -32,6 +32,21 @@ const getCartError = error => ({
   payload: error,
 });
 
+const deleteItemRequest = isLoading => ({
+  type: types.DELETE_CART_ITEM,
+  payload: isLoading,
+});
+
+const deleteItemSuccess = data => ({
+  type: types.DELETE_CART_ITEM_SUCCESS,
+  payload: data,
+});
+
+const deleteItemError = error => ({
+  type: types.DELETE_CART_ITEM_ERROR,
+  payload: error,
+});
+
 export const addToCart = payload => async dispatch => {
   dispatch(addToCartRequest(true));
   try {
@@ -53,5 +68,18 @@ export const getCart = () => async dispatch => {
   } catch (error) {
     dispatch(getCartRequest(false));
     return dispatch(getCartError(error));
+  }
+};
+
+export const deleteItem = itemId => async dispatch => {
+  dispatch(deleteItemRequest(true));
+  try {
+    const cart = await CartService.deleteItemFromCart(itemId);
+    dispatch(deleteItemRequest(false));
+    dispatch(getCart());
+    return dispatch(deleteItemSuccess(cart.data.message));
+  } catch (error) {
+    dispatch(deleteItemRequest(false));
+    return dispatch(deleteItemError(error));
   }
 };

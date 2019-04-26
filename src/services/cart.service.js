@@ -11,4 +11,8 @@ export default class CartService {
   static getCart() {
     return axios.get(`${apiBaseUrl}/cart`);
   }
+
+  static deleteItemFromCart(itemId) {
+    return axios.delete(`${apiBaseUrl}/cart/${itemId}`);
+  }
 }
