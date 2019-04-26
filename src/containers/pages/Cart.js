@@ -9,8 +9,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Link as ReachLink } from '@reach/router';
+import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-import { Typography, Button } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import config from '../../config/config';
 import { deleteItem } from '../../actions/cart.action';
 
@@ -41,6 +43,19 @@ const styles = theme => ({
   },
   name: {
     marginBottom: 0,
+  },
+  actionButton: {
+    margin: '10px auto',
+    borderRadius: '500px',
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    fontSize: '16px',
+    background: theme.palette.primary.main,
+    color: 'white',
+    paddingTop: '12px',
+    paddingBottom: '12px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
   },
 });
 
@@ -146,14 +161,16 @@ function Cart(props) {
                 <TableCell />
                 <TableCell />
                 <TableCell align="right">
-                  <Button
+                  <Link
                     className={classes.actionButton}
-                    variant="contained"
-                    size="medium"
-                    color="primary"
+                    size="large"
+                    color="secondary"
+                    component={ReachLink}
+                    to="/checkout"
+                    underline="none"
                   >
                     Checkout
-                  </Button>
+                  </Link>
                 </TableCell>
                 <TableCell />
               </TableRow>

@@ -11,6 +11,9 @@ import Home from './pages/Home';
 import ItemDetail from './pages/ItemDetail';
 import Catalog from './pages/Catalog';
 import Cart from './pages/Cart';
+import Auth from './pages/Auth';
+import Checkout from './pages/Checkout';
+import Authed from './Authed';
 
 const theme = createMuiTheme({
   palette: {
@@ -53,6 +56,9 @@ const Routes = ({ classes }) => (
     <Catalog path="/catalog/:department" />
     <Catalog path="/catalog/:department/:category" />
     <Cart path="/cart" />
+    <Auth path="/register" />
+    <Auth path="/login" />
+    <Authed path="/checkout" render={<Checkout />} />
   </Router>
 );
 

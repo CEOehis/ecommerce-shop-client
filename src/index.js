@@ -7,11 +7,23 @@ import './index.css';
 import AppRouting from './containers/AppRouting';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
+import isLoggedIn from './utils/isLoggedIn';
+import { setLoggedInUser, signOut } from './actions/auth.action';
 
 // global axios defaults
 axios.defaults.withCredentials = true;
+const { token } = localStorage;
+// eslint-disable-next-line dot-notation
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+global.axios = axios;
 
 const store = configureStore();
+
+if (isLoggedIn()) {
+  store.dispatch(setLoggedInUser());
+} else {
+  store.dispatch(signOut());
+}
 
 const Main = () => (
   <Provider store={store}>

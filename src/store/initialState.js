@@ -17,6 +17,12 @@ const initialState = {
     cart: [],
     error: '',
   },
+  auth: {
+    isAuthenticated: false,
+    loading: false,
+    user: {},
+    error: '',
+  },
 };
 
 export default initialState;
