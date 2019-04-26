@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +22,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
+import { getCart } from '../actions/cart.action';
 
 const styles = theme => ({
   root: {
@@ -134,6 +136,11 @@ class NavBar extends React.Component {
     left: false,
   };
 
+  componentDidMount() {
+    const { getCartItems } = this.props;
+    getCartItems();
+  }
+
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -177,7 +184,7 @@ class NavBar extends React.Component {
       natureSubMenuAnchorEl,
       seasonalSubMenuAnchorEl,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, cart } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isRegionalSubMenuOpen = Boolean(regionalSubMenuAnchorEl);
     const isNatureSubMenuOpen = Boolean(natureSubMenuAnchorEl);
@@ -207,7 +214,7 @@ class NavBar extends React.Component {
       >
         <MenuItem onClick={this.handleMobileMenuClose}>
           <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
+            <Badge badgeContent={cart.length} color="secondary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
@@ -529,7 +536,7 @@ class NavBar extends React.Component {
             </div>
             <div className={classes.sectionDesktop}>
               <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={cart.length} color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
@@ -568,4 +575,19 @@ NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+const mapStateToProps = store => {
+  return {
+    cart: store.cart.cart,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getCartItems() {
+    dispatch(getCart());
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(NavBar));

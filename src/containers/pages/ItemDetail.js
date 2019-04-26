@@ -127,7 +127,6 @@ class ItemDetail extends Component {
   render() {
     const { classes, loading, singleProduct, addingToCart } = this.props;
     const { quantity, size, color, showSuccessMessage } = this.state;
-    console.log('showSuccess item detail', showSuccessMessage);
 
     return (
       <>

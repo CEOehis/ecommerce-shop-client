@@ -7,4 +7,8 @@ export default class CartService {
   static addItemToCart(payload) {
     return axios.post(`${apiBaseUrl}/cart`, payload);
   }
+
+  static getCart() {
+    return axios.get(`${apiBaseUrl}/cart`);
+  }
 }
