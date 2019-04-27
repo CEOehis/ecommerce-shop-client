@@ -35,6 +35,11 @@ const authReducer = (state = initialState.auth, action) => {
         isAuthenticated: false,
         user: {},
       };
+    case types.UPDATE_SHIPPING_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }

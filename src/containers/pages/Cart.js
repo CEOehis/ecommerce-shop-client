@@ -57,6 +57,26 @@ const styles = theme => ({
     textTransform: 'uppercase',
     fontWeight: 'bold',
   },
+  emptyCart: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+      width: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      marginTop: theme.spacing.unit * 6,
+      marginBottom: theme.spacing.unit * 6,
+      padding: theme.spacing.unit * 3,
+    },
+  },
 });
 
 function Cart(props) {
@@ -71,6 +91,33 @@ function Cart(props) {
     const discountedPrice = Number(curr.Product.discounted_price);
     return Number(acc) + (discountedPrice || price) * curr.quantity;
   }, 0);
+
+  if (!cart.length) {
+    return (
+      <main className={classes.emptyCart}>
+        <Paper className={classes.paper}>
+          <Typography component="h1" variant="h4" align="center">
+            Your cart is empty.
+          </Typography>
+
+          <Typography component="h1" variant="h6">
+            You would not want to leave this shop empty handed now, would you.{' '}
+          </Typography>
+          <Typography component="h1" variant="h6">
+            <Link
+              size="large"
+              color="secondary"
+              component={ReachLink}
+              to="/catalog"
+              underline="none"
+            >
+              Click here to continue shopping
+            </Link>
+          </Typography>
+        </Paper>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -132,7 +179,7 @@ function Cart(props) {
                 <TableCell />
                 <TableCell />
                 <TableCell>Sub - Total</TableCell>
-                <TableCell align="right">${subTotal}</TableCell>
+                <TableCell align="right">${subTotal.toFixed(2)}</TableCell>
                 <TableCell />
               </TableRow>
               <TableRow>

@@ -571,7 +571,14 @@ class NavBar extends React.Component {
                   Log Out
                 </MenuItem>
               ) : (
-                <MenuItem className={classes.menuItem}>Sign in</MenuItem>
+                <Link
+                  component={ReachLink}
+                  to="/login"
+                  underline="none"
+                  color="inherit"
+                >
+                  <MenuItem className={classes.menuItem}>Sign in</MenuItem>
+                </Link>
               )}
             </div>
             <div className={classes.sectionMobile}>

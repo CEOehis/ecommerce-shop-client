@@ -1,44 +1,110 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import { Button } from '@material-ui/core';
+import Spinner from 'react-spinkit';
+import StripeCheckout from 'react-stripe-checkout';
+import { payOrder } from '../../actions/cart.action';
 
-function PaymentForm() {
-  return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Payment method
-      </Typography>
-      <Grid container spacing={24}>
-        <Grid item xs={12} md={6}>
-          <TextField required id="cardName" label="Name on card" fullWidth />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField required id="cardNumber" label="Card number" fullWidth />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField required id="expDate" label="Expiry date" fullWidth />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            label="CVV"
-            helperText="Last three digits on signature strip"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
-            label="Remember credit card details for next time"
-          />
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+const styles = theme => ({
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit,
+  },
+});
+
+const stripeApiKey = 'pk_test_Vm9TOT7YisZiGSdd5dQ39Zis00NRuNM3St';
+
+class PaymentForm extends Component {
+  state = {};
+
+  handleClose = () => {
+    console.log('App#handleClose');
+  };
+
+  handleToken = async token => {
+    const { email, id: stripeToken } = token;
+    const { order, payWithStripe, handleNext } = this.props;
+    await payWithStripe({ email, stripeToken, orderId: order.order_id });
+    handleNext();
+  };
+
+  render() {
+    const { classes, order, handleBack, loading } = this.props;
+
+    return (
+      <React.Fragment>
+        {loading ? (
+          <>
+            <Grid
+              classes={{ container: classes.loading }}
+              container
+              spacing={40}
+            >
+              <Grid item xs={12}>
+                <Spinner
+                  style={{
+                    textAlign: 'center',
+                    height: '100px',
+                  }}
+                  name="line-scale-pulse-out"
+                  color="coral"
+                />
+                <Typography variant="h6" align="center">
+                  Finalizing payment
+                </Typography>
+              </Grid>
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Typography variant="h6" gutterBottom>
+              Payment method
+            </Typography>
+            <StripeCheckout
+              allowRememberMe={false}
+              amount={(order.total_amount.toFixed(2) * 100).toFixed()}
+              closed={this.handleClose}
+              description="Payment for T-Shirt"
+              label="Pay with Stripe 💳"
+              locale="auto"
+              name="Shopmate"
+              opened={this.handleOpen}
+              panelLabel="Pay {{amount}}"
+              stripeKey={stripeApiKey}
+              token={this.handleToken}
+            />
+          </>
+        )}
+
+        <div className={classes.buttons}>
+          <Button onClick={handleBack} className={classes.button}>
+            Back
+          </Button>
+        </div>
+      </React.Fragment>
+    );
+  }
 }
 
-export default PaymentForm;
+const mapStateToProps = state => ({
+  order: state.cart.order,
+  loading: state.cart.loading,
+});
+
+const matchDispatchToProps = dispatch => ({
+  payWithStripe(payload) {
+    return dispatch(payOrder(payload));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  matchDispatchToProps
+)(withStyles(styles)(PaymentForm));

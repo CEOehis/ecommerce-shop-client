@@ -47,6 +47,51 @@ const deleteItemError = error => ({
   payload: error,
 });
 
+const updateShippingRequest = isLoading => ({
+  type: types.UPDATE_SHIPPING,
+  payload: isLoading,
+});
+
+const updateShippingSuccess = data => ({
+  type: types.UPDATE_SHIPPING_SUCCESS,
+  payload: data,
+});
+
+const updateShippingError = error => ({
+  type: types.UPDATE_SHIPPING_ERROR,
+  payload: error,
+});
+
+const createOrderRequest = isLoading => ({
+  type: types.CREATE_ORDER,
+  payload: isLoading,
+});
+
+const createOrderSuccess = data => ({
+  type: types.CREATE_ORDER_SUCCESS,
+  payload: data,
+});
+
+const createOrderError = error => ({
+  type: types.CREATE_ORDER_ERROR,
+  payload: error,
+});
+
+const payOrderRequest = isLoading => ({
+  type: types.PAY_WITH_STRIPE,
+  payload: isLoading,
+});
+
+const payOrderSuccess = data => ({
+  type: types.PAY_WITH_STRIPE_SUCCESS,
+  payload: data,
+});
+
+const payOrderError = error => ({
+  type: types.PAY_WITH_STRIPE_ERROR,
+  payload: error,
+});
+
 export const addToCart = payload => async dispatch => {
   dispatch(addToCartRequest(true));
   try {
@@ -81,5 +126,42 @@ export const deleteItem = itemId => async dispatch => {
   } catch (error) {
     dispatch(deleteItemRequest(false));
     return dispatch(deleteItemError(error));
+  }
+};
+
+export const updateShipping = payload => async dispatch => {
+  dispatch(updateShippingRequest(true));
+  try {
+    const updatedShipping = await CartService.updateShippingInfo(payload);
+    dispatch(updateShippingRequest(false));
+    return dispatch(updateShippingSuccess(updatedShipping.data.customer));
+  } catch (error) {
+    dispatch(updateShippingRequest(false));
+    return dispatch(updateShippingError(error));
+  }
+};
+
+export const createOrder = payload => async dispatch => {
+  dispatch(createOrderRequest(true));
+  try {
+    const order = await CartService.createOrder(payload);
+    dispatch(createOrderRequest(false));
+    return dispatch(createOrderSuccess(order.data.order));
+  } catch (error) {
+    dispatch(createOrderRequest(true));
+    return dispatch(createOrderError(error));
+  }
+};
+
+export const payOrder = payload => async dispatch => {
+  dispatch(payOrderRequest(true));
+  try {
+    const paid = await CartService.payWithStripe(payload);
+    dispatch(payOrderRequest(false));
+    dispatch(getCart());
+    return dispatch(payOrderSuccess(paid.data.charge));
+  } catch (error) {
+    dispatch(payOrderRequest(false));
+    return dispatch(payOrderError(error));
   }
 };

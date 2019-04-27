@@ -1,18 +1,27 @@
-import axios from 'axios';
-import config from '../config/config';
-
-const { apiBaseUrl } = config;
+import axios from './index.service';
 
 export default class CartService {
   static addItemToCart(payload) {
-    return axios.post(`${apiBaseUrl}/cart`, payload);
+    return axios.post(`/cart`, payload);
   }
 
   static getCart() {
-    return axios.get(`${apiBaseUrl}/cart`);
+    return axios.get(`/cart`);
   }
 
   static deleteItemFromCart(itemId) {
-    return axios.delete(`${apiBaseUrl}/cart/${itemId}`);
+    return axios.delete(`/cart/${itemId}`);
+  }
+
+  static updateShippingInfo(payload) {
+    return axios.put(`/customer/billing-info`, payload);
+  }
+
+  static createOrder(payload) {
+    return axios.post(`/orders`, payload);
+  }
+
+  static payWithStripe(payload) {
+    return axios.post(`/stripe`, payload);
   }
 }

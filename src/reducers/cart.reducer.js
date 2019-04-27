@@ -5,6 +5,8 @@ const cartReducer = (state = initialState.cart, action) => {
   switch (action.type) {
     case types.ADD_TO_CART:
     case types.GET_CART:
+    case types.CREATE_ORDER:
+    case types.PAY_WITH_STRIPE:
       return {
         ...state,
         loading: action.payload,
@@ -17,9 +19,20 @@ const cartReducer = (state = initialState.cart, action) => {
       };
     case types.ADD_TO_CART_ERROR:
     case types.GET_CART_ERROR:
+    case types.CREATE_ORDER_ERROR:
       return {
         ...state,
         error: action.payload,
+      };
+    case types.CREATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        order: action.payload,
+      };
+    case types.PAY_WITH_STRIPE_SUCCESS:
+      return {
+        ...state,
+        charge: action.payload,
       };
     default:
       return state;

@@ -16,6 +16,8 @@ const initialState = {
     loading: false,
     cart: [],
     error: '',
+    order: {},
+    charge: {},
   },
   auth: {
     isAuthenticated: false,

@@ -6,7 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
+import { Link as ReachLink } from '@reach/router';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
@@ -54,11 +55,11 @@ const steps = ['Shipping address', 'Review your order', 'Payment'];
 function getStepContent(step, props) {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <AddressForm {...props} />;
     case 1:
       return <Review {...props} />;
     case 2:
-      return <PaymentForm />;
+      return <PaymentForm {...props} />;
     default:
       throw new Error('Unknown step');
   }
@@ -116,28 +117,26 @@ class Checkout extends React.Component {
                     confirmation, and will send you an update when your order
                     has shipped.
                   </Typography>
+                  <Typography component="h1" variant="h6">
+                    <Link
+                      size="large"
+                      color="secondary"
+                      component={ReachLink}
+                      to="/catalog"
+                      underline="none"
+                    >
+                      Click here to continue shopping
+                    </Link>
+                  </Typography>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  {getStepContent(activeStep, { products: cart, user })}
-                  <div className={classes.buttons}>
-                    {activeStep !== 0 && (
-                      <Button
-                        onClick={this.handleBack}
-                        className={classes.button}
-                      >
-                        Back
-                      </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                    </Button>
-                  </div>
+                  {getStepContent(activeStep, {
+                    products: cart,
+                    user,
+                    handleNext: this.handleNext,
+                    handleBack: this.handleBack,
+                  })}
                 </React.Fragment>
               )}
             </React.Fragment>

@@ -1,17 +1,12 @@
-import axios from 'axios';
-import config from '../config/config';
-
-const { apiBaseUrl } = config;
+import axios from './index.service';
 
 export default class ProductService {
   static getFeaturedProducts() {
-    return axios.get(`${apiBaseUrl}/featured`);
+    return axios.get(`/featured`);
   }
 
   static getAllProducts(search = '', page = 1, limit = 12) {
-    return axios.get(
-      `${apiBaseUrl}/products?page=${page}&search=${search}&limit=${limit}`
-    );
+    return axios.get(`/products?page=${page}&search=${search}&limit=${limit}`);
   }
 
   static getAllProductsInCategory(category, page = 1, limit = 12) {
@@ -28,7 +23,7 @@ export default class ProductService {
     if (!categoryId) return ProductService.getAllProducts();
 
     return axios.get(
-      `${apiBaseUrl}/products/in-category/${categoryId}?page=${page}&limit=${limit}`
+      `/products/in-category/${categoryId}?page=${page}&limit=${limit}`
     );
   }
 
@@ -42,11 +37,11 @@ export default class ProductService {
     if (!departmentId) return ProductService.getAllProducts();
 
     return axios.get(
-      `${apiBaseUrl}/products/in-department/${departmentId}?page=${page}&limit=${limit}`
+      `/products/in-department/${departmentId}?page=${page}&limit=${limit}`
     );
   }
 
   static getProductDetails(productId) {
-    return axios.get(`${apiBaseUrl}/products/${productId}`);
+    return axios.get(`/products/${productId}`);
   }
 }

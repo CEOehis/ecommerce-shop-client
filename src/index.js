@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import axios from 'axios';
 
 import './index.css';
 import AppRouting from './containers/AppRouting';
@@ -9,12 +8,13 @@ import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
 import isLoggedIn from './utils/isLoggedIn';
 import { setLoggedInUser, signOut } from './actions/auth.action';
+import axios from './services/index.service';
 
 // global axios defaults
-axios.defaults.withCredentials = true;
 const { token } = localStorage;
 // eslint-disable-next-line dot-notation
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+axios.defaults.withCredentials = true;
 global.axios = axios;
 
 const store = configureStore();
