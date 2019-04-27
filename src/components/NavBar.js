@@ -24,6 +24,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
 import { getCart } from '../actions/cart.action';
+import { signOut } from '../actions/auth.action';
 
 const styles = theme => ({
   root: {
@@ -177,6 +178,11 @@ class NavBar extends React.Component {
     });
   };
 
+  handleLogOut = () => {
+    const { logOut } = this.props;
+    logOut();
+  };
+
   render() {
     const {
       anchorEl,
@@ -185,7 +191,7 @@ class NavBar extends React.Component {
       natureSubMenuAnchorEl,
       seasonalSubMenuAnchorEl,
     } = this.state;
-    const { classes, cart } = this.props;
+    const { classes, cart, isAuthenticated } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isRegionalSubMenuOpen = Boolean(regionalSubMenuAnchorEl);
     const isNatureSubMenuOpen = Boolean(natureSubMenuAnchorEl);
@@ -223,12 +229,18 @@ class NavBar extends React.Component {
             <p>Shopping Cart</p>
           </MenuItem>
         </Link>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
+        {isAuthenticated ? (
+          <MenuItem onClick={this.handleLogOut}>Log Out</MenuItem>
+        ) : (
+          <Link
+            component={ReachLink}
+            to="/login"
+            underline="none"
+            color="inherit"
+          >
+            <MenuItem>Sign in</MenuItem>
+          </Link>
+        )}
       </Menu>
     );
 
@@ -551,21 +563,16 @@ class NavBar extends React.Component {
                   </Badge>
                 </Link>
               </IconButton>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
-                <Button
-                  color="inherit"
-                  component={ReachLink}
-                  underline="none"
-                  to=""
+              {isAuthenticated ? (
+                <MenuItem
+                  className={classes.menuItem}
+                  onClick={this.handleLogOut}
                 >
-                  <AccountCircle />
-                </Button>
-              </IconButton>
+                  Log Out
+                </MenuItem>
+              ) : (
+                <MenuItem className={classes.menuItem}>Sign in</MenuItem>
+              )}
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
@@ -596,12 +603,17 @@ NavBar.propTypes = {
 const mapStateToProps = store => {
   return {
     cart: store.cart.cart,
+    user: store.auth.user,
+    isAuthenticated: store.auth.isAuthenticated,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getCartItems() {
     dispatch(getCart());
+  },
+  logOut() {
+    dispatch(signOut());
   },
 });
 

@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Link as ReachLink } from '@reach/router';
+import { Link as ReachLink, Redirect } from '@reach/router';
 import Link from '@material-ui/core/Link';
 import { signUp, logIn } from '../../actions/auth.action';
 
@@ -77,11 +77,15 @@ class Auth extends Component {
 
   render() {
     const { name, email, password } = this.state;
-    const { classes, path } = this.props;
+    const { classes, path, isAuthenticated } = this.props;
     const isRegisterPage = path === '/register';
     const promptMessage = isRegisterPage ? 'Already a user' : 'Not a user';
     const promptAction = isRegisterPage ? 'sign in' : 'sign up';
     const promptPath = isRegisterPage ? '/login' : '/register';
+
+    if (isAuthenticated) {
+      return <Redirect to="" noThrow />;
+    }
 
     return (
       <main className={classes.main}>
