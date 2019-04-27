@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,7 +13,6 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -136,6 +134,7 @@ class NavBar extends React.Component {
     natureSubMenuAnchorEl: null,
     seasonalSubMenuAnchorEl: null,
     left: false,
+    search: '',
   };
 
   componentDidMount() {
@@ -183,6 +182,18 @@ class NavBar extends React.Component {
     logOut();
   };
 
+  handleSearchChange = event => {
+    this.setState({
+      search: event.target.value,
+    });
+  };
+
+  handleSearch = event => {
+    event.preventDefault();
+    const { search } = this.state;
+    window.location.replace(`/catalog?${search}`);
+  };
+
   render() {
     const {
       anchorEl,
@@ -190,6 +201,7 @@ class NavBar extends React.Component {
       regionalSubMenuAnchorEl,
       natureSubMenuAnchorEl,
       seasonalSubMenuAnchorEl,
+      search,
     } = this.state;
     const { classes, cart, isAuthenticated } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -541,13 +553,19 @@ class NavBar extends React.Component {
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
-              <InputBase
-                placeholder="Search anything…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
+              <form onSubmit={this.handleSearch}>
+                <InputBase
+                  placeholder="Search anything…"
+                  type="search"
+                  name="search"
+                  value={search}
+                  onChange={this.handleSearchChange}
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                />
+              </form>
             </div>
             <div className={classes.sectionDesktop}>
               <IconButton color="inherit">

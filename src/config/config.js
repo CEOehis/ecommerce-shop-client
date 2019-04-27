@@ -5,7 +5,7 @@ const config = {
       : 'http://localhost:5000/api/v1',
   imageBaseUrl:
     process.env.NODE_ENV === 'production'
-      ? 'https://cloudinaryLink'
+      ? 'https://res.cloudinary.com/do8buqscj/image/upload/v1556396547/turing_images'
       : 'http://localhost:2000/images',
 };
 

@@ -17,6 +17,7 @@ import {
   getAllProductsInCategory,
   getAllProductsInDepartment,
 } from '../../actions/product.action';
+import { descriptions } from '../../assets/tileData';
 
 const { imageBaseUrl } = config;
 
@@ -96,6 +97,9 @@ class Catalog extends Component {
       category,
     } = this.props;
 
+    const { search } = window.location;
+    const decodedString = decodeURIComponent(search.substring(1));
+
     const isOnDepartmentCatalog = Boolean(department);
     const isOnCategoryCatalog = Boolean(category);
     if (isOnCategoryCatalog) {
@@ -104,7 +108,7 @@ class Catalog extends Component {
     if (isOnDepartmentCatalog) {
       return getProductsInDepartment(department);
     }
-    return getProducts();
+    return getProducts(decodedString);
   }
 
   componentDidUpdate(prevProps) {
@@ -146,13 +150,15 @@ class Catalog extends Component {
 
     const isOnDepartmentCatalog = Boolean(department);
     const isOnCategoryCatalog = Boolean(category);
+    const { search } = window.location;
+    const decodedString = decodeURIComponent(search.substring(1));
     if (isOnCategoryCatalog) {
       return getProductsInCategory(category, page);
     }
     if (isOnDepartmentCatalog) {
       return getProductsInDepartment(department, page);
     }
-    return getProducts('', page);
+    return getProducts(decodedString, page);
   };
 
   handlePagination = offset => {
@@ -174,6 +180,7 @@ class Catalog extends Component {
       loading,
     } = this.props;
     const { offset } = this.state;
+
     return (
       <>
         <CssBaseline />
@@ -201,12 +208,11 @@ class Catalog extends Component {
                   : 'ALL PRODUCTS'}
               </Typography>
               <Typography variant="h6" color="inherit" paragraph>
-                The French have always had an eye for beauty. One look at the
-                T-shirts below and you'll see that same appreciation has been
-                applied abundantly to their postage stamps. Below are some of
-                our most beautiful and colorful T-shirts, so browse away! And
-                don't forget to go all the way to the bottom - you don't want to
-                miss any of them!
+                {category
+                  ? descriptions[category]
+                  : department
+                  ? descriptions[department]
+                  : descriptions['all products']}
               </Typography>
             </div>
           </div>
