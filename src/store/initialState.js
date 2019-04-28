@@ -1,3 +1,5 @@
+import isLoggedIn from '../utils/isLoggedIn';
+
 const initialState = {
   product: {
     loading: false,
@@ -20,7 +22,7 @@ const initialState = {
     charge: {},
   },
   auth: {
-    isAuthenticated: false,
+    isAuthenticated: isLoggedIn(),
     loading: false,
     user: {},
     error: '',

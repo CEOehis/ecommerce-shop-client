@@ -7,9 +7,9 @@ import classNames from 'classnames';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Spinner from 'react-spinkit';
 import { withStyles } from '@material-ui/core/styles';
 import Pagination from 'material-ui-flat-pagination';
+import { CircularProgress } from '@material-ui/core';
 import ItemCard from '../../components/ItemCard';
 import config from '../../config/config';
 import {
@@ -79,6 +79,12 @@ const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
+  },
+  progress: {
+    textAlign: 'center',
+    height: '100px',
+    display: 'block',
+    margin: '0 auto',
   },
 });
 
@@ -234,13 +240,9 @@ class Catalog extends Component {
                 spacing={40}
               >
                 <Grid item xs={12}>
-                  <Spinner
-                    style={{
-                      textAlign: 'center',
-                      height: '100px',
-                    }}
-                    name="line-scale-pulse-out"
-                    color="coral"
+                  <CircularProgress
+                    className={classes.progress}
+                    color="secondary"
                   />
                 </Grid>
               </Grid>

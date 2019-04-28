@@ -4,8 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
-import Spinner from 'react-spinkit';
 import Button from '@material-ui/core/Button';
+import { CircularProgress } from '@material-ui/core';
 import cookieParse from 'cookie-parse';
 import ColorPicker from '../../components/ColorPicker';
 import SizePicker from '../../components/SizePicker';
@@ -55,6 +55,12 @@ const styles = theme => ({
     borderRadius: theme.shape.borderRadius * 100,
     paddingLeft: '50px',
     paddingRight: '50px',
+  },
+  progress: {
+    textAlign: 'center',
+    height: '100px',
+    display: 'block',
+    margin: '50px auto',
   },
 });
 
@@ -142,13 +148,9 @@ class ItemDetail extends Component {
               spacing={40}
             >
               <Grid item xs={12}>
-                <Spinner
-                  style={{
-                    textAlign: 'center',
-                    height: '100px',
-                  }}
-                  name="line-scale-pulse-out"
-                  color="coral"
+                <CircularProgress
+                  className={classes.progress}
+                  color="secondary"
                 />
               </Grid>
             </Grid>

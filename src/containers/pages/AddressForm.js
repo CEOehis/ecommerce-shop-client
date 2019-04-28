@@ -28,14 +28,29 @@ const styles = theme => ({
 class AddressForm extends Component {
   state = {
     updated: false,
-    name: this.props.user ? this.props.user.name : '',
-    address1: this.props.user ? this.props.user.address_1 : '',
-    address2: this.props.user ? this.props.user.address_2 : '',
-    city: this.props.user ? this.props.user.city : '',
-    region: this.props.user ? this.props.user.region : '',
-    postalCode: this.props.user ? this.props.user.postal_code : '',
-    country: this.props.user ? this.props.user.country : '',
+    name: '',
+    address1: '',
+    address2: '',
+    city: '',
+    region: '',
+    postalCode: '',
+    country: '',
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.user && nextProps.user.name !== prevState.name) {
+      return {
+        name: nextProps.user ? nextProps.user.name : '',
+        address1: nextProps.user ? nextProps.user.address_1 : '',
+        address2: nextProps.user ? nextProps.user.address_2 : '',
+        city: nextProps.user ? nextProps.user.city : '',
+        region: nextProps.user ? nextProps.user.region : '',
+        postalCode: nextProps.user ? nextProps.user.postal_code : '',
+        country: nextProps.user ? nextProps.user.country : '',
+      };
+    }
+    return null;
+  }
 
   handleInputChange = event => {
     this.setState({

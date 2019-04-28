@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
-import Spinner from 'react-spinkit';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import StripeCheckout from 'react-stripe-checkout';
 import { payOrder } from '../../actions/cart.action';
 
@@ -16,6 +16,12 @@ const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit * 3,
     marginLeft: theme.spacing.unit,
+  },
+  progress: {
+    textAlign: 'center',
+    height: '100px',
+    display: 'block',
+    margin: '0 auto',
   },
 });
 
@@ -48,13 +54,9 @@ class PaymentForm extends Component {
               spacing={40}
             >
               <Grid item xs={12}>
-                <Spinner
-                  style={{
-                    textAlign: 'center',
-                    height: '100px',
-                  }}
-                  name="line-scale-pulse-out"
-                  color="coral"
+                <CircularProgress
+                  className={classes.progress}
+                  color="secondary"
                 />
                 <Typography variant="h6" align="center">
                   Finalizing payment

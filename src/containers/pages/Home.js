@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Spinner from 'react-spinkit';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ItemCard from '../../components/ItemCard';
 import DepartmentGrid from '../../components/DepartmentGrid';
 import { getFeaturedProducts } from '../../actions/product.action';
@@ -18,8 +18,6 @@ const { imageBaseUrl } = config;
 const styles = theme => ({
   layout: {
     width: 'auto',
-    // marginLeft: theme.spacing.unit,
-    // marginRight: theme.spacing.unit,
     [theme.breakpoints.up(1200 + theme.spacing.unit * 3 * 2)]: {
       width: 1200,
       marginLeft: 'auto',
@@ -97,6 +95,12 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 8,
     padding: `${theme.spacing.unit * 6}px 0`,
   },
+  progress: {
+    textAlign: 'center',
+    height: '100px',
+    display: 'block',
+    margin: '0 auto',
+  },
 });
 
 class Home extends Component {
@@ -150,13 +154,9 @@ class Home extends Component {
         {loading && (
           <Grid classes={{ container: classes.me }} container spacing={40}>
             <Grid item xs={12}>
-              <Spinner
-                style={{
-                  textAlign: 'center',
-                  height: '100px',
-                }}
-                name="line-scale-pulse-out"
-                color="coral"
+              <CircularProgress
+                className={classes.progress}
+                color="secondary"
               />
             </Grid>
           </Grid>
