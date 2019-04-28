@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import * as types from './action.types';
 import AuthService from '../services/auth.service';
+import axios from '../services/index.service';
 
 const signUpRequest = isLoading => ({
   type: types.SIGN_UP,
@@ -38,6 +39,10 @@ export const signUp = payload => async dispatch => {
     const customer = await AuthService.signUp(payload);
     dispatch(signUpRequest(false));
     localStorage.setItem('token', customer.data.token);
+    // eslint-disable-next-line dot-notation
+    axios.defaults.headers.common['Authorization'] = `Bearer ${
+      customer.data.token
+    }`;
     return dispatch(signUpSuccess(customer.data.customer));
   } catch (error) {
     dispatch(signUpRequest(false));
@@ -51,6 +56,10 @@ export const logIn = payload => async dispatch => {
     const customer = await AuthService.logIn(payload);
     dispatch(logInRequest(false));
     localStorage.setItem('token', customer.data.token);
+    // eslint-disable-next-line dot-notation
+    axios.defaults.headers.common['Authorization'] = `Bearer ${
+      customer.data.token
+    }`;
     return dispatch(logInSuccess(customer.data.customer));
   } catch (error) {
     dispatch(logInRequest(false));

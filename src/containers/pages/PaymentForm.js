@@ -80,14 +80,13 @@ class PaymentForm extends Component {
               stripeKey={stripeApiKey}
               token={this.handleToken}
             />
+            <div className={classes.buttons}>
+              <Button onClick={handleBack} className={classes.button}>
+                Back
+              </Button>
+            </div>
           </>
         )}
-
-        <div className={classes.buttons}>
-          <Button onClick={handleBack} className={classes.button}>
-            Back
-          </Button>
-        </div>
       </React.Fragment>
     );
   }
