@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link as ReachLink, Redirect } from '@reach/router';
+import { FormHelperText } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { signUp, logIn } from '../../actions/auth.action';
 
@@ -77,7 +78,7 @@ class Auth extends Component {
 
   render() {
     const { name, email, password } = this.state;
-    const { classes, path, isAuthenticated } = this.props;
+    const { classes, path, isAuthenticated, error } = this.props;
     const isRegisterPage = path === '/register';
     const promptMessage = isRegisterPage ? 'Already a user' : 'Not a user';
     const promptAction = isRegisterPage ? 'sign in' : 'sign up';
@@ -119,6 +120,7 @@ class Auth extends Component {
                 id="email"
                 name="email"
                 autoComplete="email"
+                type="email"
                 autoFocus
               />
             </FormControl>
@@ -137,6 +139,11 @@ class Auth extends Component {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {error && (
+              <FormHelperText error id="">
+                {error}
+              </FormHelperText>
+            )}
             <Button
               type="submit"
               fullWidth
@@ -144,7 +151,7 @@ class Auth extends Component {
               color="primary"
               className={classes.submit}
             >
-              Sign in
+              {isRegisterPage ? 'Sign up' : 'Sign in'}
             </Button>
           </form>
           <p>
@@ -174,6 +181,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
   user: state.auth.user,
+  error: state.auth.error,
 });
 
 const mapDispatchToProps = dispatch => ({

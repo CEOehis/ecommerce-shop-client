@@ -46,7 +46,18 @@ export const signUp = payload => async dispatch => {
     return dispatch(signUpSuccess(customer.data.customer));
   } catch (error) {
     dispatch(signUpRequest(false));
-    return dispatch(signUpError(error));
+    if (error.response) {
+      if (error.response.status === 409) {
+        return dispatch(logInError(error.response.data.message));
+      }
+      const keys = Object.keys(error.response.data.errors);
+      const errors = [];
+      keys.forEach(key => {
+        errors.push(error.response.data.errors[key][0]);
+      });
+      return dispatch(logInError(errors[0]));
+    }
+    return dispatch(logInError('Unable to sign up at the moment'));
   }
 };
 
@@ -63,7 +74,18 @@ export const logIn = payload => async dispatch => {
     return dispatch(logInSuccess(customer.data.customer));
   } catch (error) {
     dispatch(logInRequest(false));
-    return dispatch(logInError(error));
+    if (error.response) {
+      if (error.response.status === 401) {
+        return dispatch(logInError(error.response.data.message));
+      }
+      const keys = Object.keys(error.response.data.errors);
+      const errors = [];
+      keys.forEach(key => {
+        errors.push(error.response.data.errors[key][0]);
+      });
+      return dispatch(logInError(errors[0]));
+    }
+    return dispatch(logInError('Unable to log in at the moment'));
   }
 };
 
