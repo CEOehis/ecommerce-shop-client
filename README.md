@@ -22,4 +22,24 @@ In order to install and run this project locally, you would need to have the fol
 
 * [**Node JS**](https://nodejs.org/en/)
 
+You also need the api server for this application. You can clone the repository and follow the set up instructions for the backend here:
+[https://github.com/CEOehis/ecommerce-shop.git](https://github.com/CEOehis/ecommerce-shop.git)
+
 ### Installation
+
+* Clone this repository
+
+```sh
+git clone git@github.com/CEOehis/ecommerce-shop-client.git
+```
+
+* Navigate to the project directory
+
+```sh
+cd path/to/ecommerce-shop=client
+
+```
+
+* Run `npm install` or `yarn` to instal the projects dependencies
+* Open a new terminal window and run `npm run dev` to start the application
+* Open another terminal window and run `npm run serve-images` to serve the images locally
