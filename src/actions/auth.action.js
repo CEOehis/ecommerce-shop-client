@@ -48,16 +48,16 @@ export const signUp = payload => async dispatch => {
     dispatch(signUpRequest(false));
     if (error.response) {
       if (error.response.status === 409) {
-        return dispatch(logInError(error.response.data.message));
+        return dispatch(signUpError(error.response.data.message));
       }
       const keys = Object.keys(error.response.data.errors);
       const errors = [];
       keys.forEach(key => {
         errors.push(error.response.data.errors[key][0]);
       });
-      return dispatch(logInError(errors[0]));
+      return dispatch(signUpError(errors[0]));
     }
-    return dispatch(logInError('Unable to sign up at the moment'));
+    return dispatch(signUpError('Unable to sign up at the moment'));
   }
 };
 

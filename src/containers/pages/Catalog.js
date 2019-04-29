@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Pagination from 'material-ui-flat-pagination';
-import { CircularProgress, Paper } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
 import ItemCard from '../../components/ItemCard';
