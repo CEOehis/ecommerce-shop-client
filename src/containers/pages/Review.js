@@ -34,8 +34,8 @@ class Review extends Component {
   state = {};
 
   handleCreateOrder = async () => {
-    const { handleNext, confirmOrder } = this.props;
-    const shippingId = 2;
+    const { handleNext, confirmOrder, user } = this.props;
+    const shippingId = user.shipping_region_id;
     await confirmOrder({ shippingId });
     handleNext();
   };
@@ -72,7 +72,7 @@ class Review extends Component {
             </ListItem>
           ))}
           <ListItem className={classes.listItem}>
-            <ListItemText primary="Total" />
+            <ListItemText primary="Total(including discount)" />
             <Typography variant="subtitle1" className={classes.total}>
               ${discountedTotal.toFixed(2)}
             </Typography>
@@ -109,6 +109,10 @@ Review.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = state => ({
+  user: state.auth.user,
+});
+
 const mapDispatchToProps = dispatch => ({
   confirmOrder(payload) {
     return dispatch(createOrder(payload));
@@ -116,6 +120,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(Review));

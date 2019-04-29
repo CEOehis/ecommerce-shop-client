@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Button } from '@material-ui/core';
+import { Button, Select, InputLabel, FormControl } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
@@ -35,6 +35,7 @@ class AddressForm extends Component {
     region: '',
     postalCode: '',
     country: '',
+    shippingRegionId: '',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -47,6 +48,9 @@ class AddressForm extends Component {
         region: nextProps.user ? nextProps.user.region : '',
         postalCode: nextProps.user ? nextProps.user.postal_code : '',
         country: nextProps.user ? nextProps.user.country : '',
+        shippingRegionId: nextProps.user
+          ? nextProps.user.shipping_region_id
+          : '',
       };
     }
     return null;
@@ -70,6 +74,7 @@ class AddressForm extends Component {
       region,
       postalCode,
       country,
+      shippingRegionId,
       updated,
     } = this.state;
 
@@ -82,6 +87,7 @@ class AddressForm extends Component {
         region,
         postalCode,
         country,
+        shippingRegionId,
       });
     }
     handleNext();
@@ -99,6 +105,7 @@ class AddressForm extends Component {
       region,
       postalCode,
       country,
+      shippingRegionId,
     } = this.state;
 
     if (!products.length) {
@@ -215,6 +222,28 @@ class AddressForm extends Component {
                 value={country}
                 onChange={this.handleInputChange}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl>
+                <InputLabel htmlFor="shippingRegionId">
+                  Shipping Region
+                </InputLabel>
+                <Select
+                  native
+                  required
+                  value={shippingRegionId}
+                  onChange={this.handleInputChange}
+                  inputProps={{
+                    name: 'shippingRegionId',
+                    id: 'shippingRegionId',
+                  }}
+                >
+                  <option value="" />
+                  <option value={2}>US / Canada</option>
+                  <option value={3}>Europe</option>
+                  <option value={4}>Rest of World</option>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
