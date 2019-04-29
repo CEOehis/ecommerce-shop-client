@@ -6,7 +6,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link as ReachLink } from '@reach/router';
 import Link from '@material-ui/core/Link';
@@ -14,7 +13,7 @@ import config from '../config/config';
 
 const { imageBaseUrl } = config;
 
-const styles = {
+const styles = theme => ({
   media: {
     height: 200,
     backgroundSize: 'contain',
@@ -33,6 +32,12 @@ const styles = {
     paddingLeft: '30px',
     paddingRight: '30px',
     fontSize: '16px',
+    background: theme.palette.primary.main,
+    color: 'white',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
   },
   cta: {
     position: 'absolute',
@@ -48,7 +53,7 @@ const styles = {
     flexDirection: 'column',
     margin: 'auto',
   },
-};
+});
 
 class ItemCard extends Component {
   constructor(props) {
@@ -107,17 +112,10 @@ class ItemCard extends Component {
                     color="secondary"
                     component={ReachLink}
                     to={`/item/${product.product_id}`}
+                    underline="none"
                   >
-                    View details
+                    Buy Now
                   </Link>
-                  <Button
-                    className={classes.actionButton}
-                    variant="contained"
-                    size="medium"
-                    color="primary"
-                  >
-                    Buy now
-                  </Button>
                 </div>
               </CardActions>
             )}

@@ -9,7 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Pagination from 'material-ui-flat-pagination';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Paper } from '@material-ui/core';
+import { Link as ReachLink } from '@reach/router';
+import Link from '@material-ui/core/Link';
 import ItemCard from '../../components/ItemCard';
 import config from '../../config/config';
 import {
@@ -85,6 +87,16 @@ const styles = theme => ({
     height: '100px',
     display: 'block',
     margin: '0 auto',
+  },
+  noProducts: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+      width: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
   },
 });
 
@@ -248,11 +260,36 @@ class Catalog extends Component {
               </Grid>
             ) : (
               <Grid container spacing={40}>
-                {products.map(product => (
-                  <Grid item key={product.product_id} sm={6} md={4} lg={3}>
-                    <ItemCard product={product} />
-                  </Grid>
-                ))}
+                {products.length ? (
+                  products.map(product => (
+                    <Grid item key={product.product_id} sm={6} md={4} lg={3}>
+                      <ItemCard product={product} />
+                    </Grid>
+                  ))
+                ) : (
+                  <main className={classes.noProducts}>
+                    <div className={classes.paper}>
+                      <Typography component="h1" variant="overline">
+                        For some reason we are unable to show you products to
+                        choose from.
+                      </Typography>
+                      <Typography component="p" variant="overline">
+                        You might need to reload the page or{' '}
+                      </Typography>
+                      <Typography component="h1" variant="h6">
+                        <Link
+                          size="large"
+                          color="secondary"
+                          component={ReachLink}
+                          to="/"
+                          underline="none"
+                        >
+                          Click here to continue shopping
+                        </Link>
+                      </Typography>
+                    </div>
+                  </main>
+                )}
               </Grid>
             )}
           </div>

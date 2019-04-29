@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import { Link as ReachLink } from '@reach/router';
+import { Link as ReachLink, Redirect } from '@reach/router';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import AddressForm from './AddressForm';
@@ -91,6 +91,10 @@ class Checkout extends React.Component {
   render() {
     const { classes, cart, user } = this.props;
     const { activeStep } = this.state;
+
+    if (!cart.length && activeStep < steps.length) {
+      return <Redirect to="/catalog" noThrow />;
+    }
 
     return (
       <React.Fragment>
